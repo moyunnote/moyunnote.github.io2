@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moyun Note | 나만의 중국어 표현 노트</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ink-bg"></div>
+  <aside class="sidebar">
+    <div class="brand" data-view-target="searchView">
+      <div class="brand-mark">墨</div>
+      <div>
+        <h1>Moyun Note</h1>
+        <p>나만의 중국어 표현 노트</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-view-target="searchView">표현 찾기</button>
+      <button class="nav-btn" data-view-target="todayView">오늘의 표현</button>
+      <button class="nav-btn" data-view-target="noteView">내 표현 노트</button>
+      <button class="nav-btn" data-view-target="addView">표현 추가</button>
+      <button class="nav-btn" data-view-target="listView">표현 목록</button>
+    </nav>
+    <button id="themeBtn" class="theme-btn">🌙 야간모드</button>
+  </aside>
+
+  <main class="app">
+    <section id="searchView" class="view active">
+      <div class="hero card">
+        <span class="eyebrow">오늘도 한 문장씩</span>
+        <h2>표현 사전에서 자연스러운 중국어를 찾아봐요</h2>
+        <p>한국어 또는 중국어 문장을 입력하면 등록된 표현 중 가장 가까운 표현을 바탕으로 정리해줘요.</p>
+        <div class="search-box">
+          <textarea id="queryInput" placeholder="예) 밥 먹었어? / 발표 시작하겠습니다 / 这个多少钱？"></textarea>
+          <div class="situations" id="situationButtons">
+            <button class="chip active" data-situation="친구">친구</button>
+            <button class="chip" data-situation="학교">학교</button>
+            <button class="chip" data-situation="발표">발표</button>
+            <button class="chip" data-situation="여행">여행</button>
+            <button class="chip" data-situation="SNS">SNS</button>
+            <button class="chip" data-situation="공식">공식</button>
+          </div>
+          <button id="searchBtn" class="primary-btn">표현 찾아보기</button>
+        </div>
+      </div>
+
+      <div class="layout-grid">
+        <section id="resultArea" class="result-area"></section>
+        <aside class="side-panel">
+          <div class="card mini-card" id="todayMini"></div>
+          <div class="card mini-card">
+            <h3>최근 학습 표현</h3>
+            <div id="recentList" class="simple-list"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="todayView" class="view">
+      <div class="section-head">
+        <span class="eyebrow">Today</span>
+        <h2>오늘의 표현 노트</h2>
+      </div>
+      <div id="todayFull" class="today-grid"></div>
+    </section>
+
+    <section id="noteView" class="view">
+      <div class="section-head">
+        <span class="eyebrow">Saved</span>
+        <h2>내 표현 노트</h2>
+      </div>
+      <div id="savedList" class="cards-grid"></div>
+    </section>
+
+    <section id="addView" class="view">
+      <div class="section-head">
+        <span class="eyebrow">Add</span>
+        <h2>직접 표현 추가하기</h2>
+      </div>
+      <form id="addForm" class="card add-form">
+        <label>한국어 표현<input id="addKo" required placeholder="예) 오늘 너무 피곤해" /></label>
+        <label>자연스러운 중국어 표현<input id="addCn" required placeholder="예) 我今天太累了。" /></label>
+        <label>병음<input id="addPy" required placeholder="예) Wǒ jīntiān tài lèi le." /></label>
+        <label>카테고리<input id="addCategory" placeholder="예) 감정 표현" /></label>
+        <label>상황 태그<input id="addTag" placeholder="예) 친구" /></label>
+        <label>간단한 설명<textarea id="addDesc" placeholder="언제 쓰는 표현인지 간단히 적어줘"></textarea></label>
+        <button class="primary-btn" type="submit">내 표현 사전에 등록</button>
+      </form>
+    </section>
+
+    <section id="listView" class="view">
+      <div class="section-head">
+        <span class="eyebrow">Library</span>
+        <h2>사용 가능 표현 목록</h2>
+      </div>
+      <div class="list-tools card">
+        <input id="listSearch" placeholder="표현 검색" />
+        <select id="categoryFilter"><option value="all">전체 카테고리</option></select>
+      </div>
+      <div id="phraseList" class="cards-grid"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
