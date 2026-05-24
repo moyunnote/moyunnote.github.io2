@@ -3,107 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moyun Note | 나만의 중국어 표현 노트</title>
+  <title>MoyunNote · 墨韵 — 중국어의 분위기를 배우다</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="ink-bg"></div>
-  <aside class="sidebar">
-    <div class="brand" data-view-target="searchView">
-      <div class="brand-mark">墨</div>
-      <div>
-        <h1>Moyun Note</h1>
-        <p>나만의 중국어 표현 노트</p>
-      </div>
-    </div>
-    <nav class="nav">
-      <button class="nav-btn active" data-view-target="searchView">표현 찾기</button>
-      <button class="nav-btn" data-view-target="todayView">오늘의 표현</button>
-      <button class="nav-btn" data-view-target="noteView">내 표현 노트</button>
-      <button class="nav-btn" data-view-target="addView">표현 추가</button>
-      <button class="nav-btn" data-view-target="listView">표현 목록</button>
-    </nav>
-    <button id="themeBtn" class="theme-btn">🌙 야간모드</button>
-  </aside>
+  <!-- 한지/먹 배경 (CSS only) -->
+  <div class="paper-bg" aria-hidden="true">
+    <span class="ink ink-1"></span>
+    <span class="ink ink-2"></span>
+    <span class="ink ink-3"></span>
+    <span class="brush-stroke"></span>
+  </div>
 
-  <main class="app">
-    <section id="searchView" class="view active">
-      <div class="hero card">
-        <span class="eyebrow">오늘도 한 문장씩</span>
-        <h2>표현 사전에서 자연스러운 중국어를 찾아봐요</h2>
-        <p>한국어 또는 중국어 문장을 입력하면 등록된 표현 중 가장 가까운 표현을 바탕으로 정리해줘요.</p>
-        <div class="search-box">
-          <textarea id="queryInput" placeholder="예) 밥 먹었어? / 발표 시작하겠습니다 / 这个多少钱？"></textarea>
-          <div class="situations" id="situationButtons">
-            <button class="chip active" data-situation="친구">친구</button>
-            <button class="chip" data-situation="학교">학교</button>
-            <button class="chip" data-situation="발표">발표</button>
-            <button class="chip" data-situation="여행">여행</button>
-            <button class="chip" data-situation="SNS">SNS</button>
-            <button class="chip" data-situation="공식">공식</button>
-          </div>
-          <button id="searchBtn" class="primary-btn">표현 찾아보기</button>
+  <!-- 모바일 상단바 -->
+  <header class="topbar">
+    <button id="navToggle" class="nav-toggle" aria-label="메뉴 열기">☰</button>
+    <span class="topbar-brand">墨韵 <i>MoyunNote</i></span>
+  </header>
+
+  <div class="layout">
+    <!-- ===================== 사이드바 ===================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="seal">墨<br />韵</div>
+        <div class="brand-text">
+          <h1>MoyunNote</h1>
+          <p>중국어의 분위기를 배우다</p>
         </div>
       </div>
 
-      <div class="layout-grid">
-        <section id="resultArea" class="result-area"></section>
-        <aside class="side-panel">
-          <div class="card mini-card" id="todayMini"></div>
-          <div class="card mini-card">
-            <h3>최근 학습 표현</h3>
-            <div id="recentList" class="simple-list"></div>
+      <nav class="nav" aria-label="메뉴">
+        <button class="nav-item active" data-view="analyze">
+          <span class="nav-ic">筆</span><span>맥락 분석</span>
+        </button>
+        <button class="nav-item" data-view="archive">
+          <span class="nav-ic">藏</span><span>표현 아카이브</span>
+        </button>
+        <button class="nav-item" data-view="favorite">
+          <span class="nav-ic">印</span><span>즐겨찾기 표현</span>
+        </button>
+        <button class="nav-item" data-view="stats">
+          <span class="nav-ic">統</span><span>학습 통계</span>
+        </button>
+      </nav>
+
+      <!-- 오늘의 표현 -->
+      <div class="side-block">
+        <h2 class="side-title">오늘의 표현</h2>
+        <div id="sideToday" class="today-mini"></div>
+      </div>
+
+      <!-- 최근 학습 기록 -->
+      <div class="side-block">
+        <h2 class="side-title">최근 학습 기록</h2>
+        <div id="sideRecent" class="side-recent"></div>
+      </div>
+
+      <p class="side-foot">언어는 번역이 아니라<br />분위기를 이해하는 일입니다.</p>
+    </aside>
+
+    <!-- ===================== 메인 ===================== -->
+    <main class="main">
+
+      <!-- ---------- 맥락 분석 ---------- -->
+      <section class="view active" data-view="analyze">
+        <div class="hero">
+          <p class="hero-zh">语言不只是翻译，而是理解氛围与语境。</p>
+          <h2 class="hero-ko">중국어를 외우는 것이 아니라,<br />중국어의 <em>감각</em>을 배우다.</h2>
+          <p class="hero-sub">한국어 또는 중국어 표현을 적고 상황을 고르면, 왜 그렇게 말하는지·직역하면 왜 어색한지·상황에 따라 어떻게 달라지는지 정리해 드려요.</p>
+        </div>
+
+        <div class="paper-card analyze-card">
+          <textarea id="analyzeInput" class="analyze-input" rows="2"
+            placeholder="예) 화이팅! / 눈치 좀 챙겨 / 谢谢 / 시험 잘 봤어?"></textarea>
+
+          <div class="sit-row">
+            <span class="sit-label">상황 선택</span>
+            <div class="sit-chips" id="sitChips">
+              <button class="chip" data-sit="친구">친구</button>
+              <button class="chip" data-sit="학교 발표">학교 발표</button>
+              <button class="chip" data-sit="여행">여행</button>
+              <button class="chip" data-sit="SNS">SNS</button>
+              <button class="chip" data-sit="공식 표현">공식 표현</button>
+            </div>
           </div>
-        </aside>
-      </div>
-    </section>
 
-    <section id="todayView" class="view">
-      <div class="section-head">
-        <span class="eyebrow">Today</span>
-        <h2>오늘의 표현 노트</h2>
-      </div>
-      <div id="todayFull" class="today-grid"></div>
-    </section>
+          <button id="analyzeBtn" class="btn btn-primary btn-block">맥락 분석하기</button>
+        </div>
 
-    <section id="noteView" class="view">
-      <div class="section-head">
-        <span class="eyebrow">Saved</span>
-        <h2>내 표현 노트</h2>
-      </div>
-      <div id="savedList" class="cards-grid"></div>
-    </section>
+        <div id="analyzeResult" class="result-zone"></div>
+      </section>
 
-    <section id="addView" class="view">
-      <div class="section-head">
-        <span class="eyebrow">Add</span>
-        <h2>직접 표현 추가하기</h2>
-      </div>
-      <form id="addForm" class="card add-form">
-        <label>한국어 표현<input id="addKo" required placeholder="예) 오늘 너무 피곤해" /></label>
-        <label>자연스러운 중국어 표현<input id="addCn" required placeholder="예) 我今天太累了。" /></label>
-        <label>병음<input id="addPy" required placeholder="예) Wǒ jīntiān tài lèi le." /></label>
-        <label>카테고리<input id="addCategory" placeholder="예) 감정 표현" /></label>
-        <label>상황 태그<input id="addTag" placeholder="예) 친구" /></label>
-        <label>간단한 설명<textarea id="addDesc" placeholder="언제 쓰는 표현인지 간단히 적어줘"></textarea></label>
-        <button class="primary-btn" type="submit">내 표현 사전에 등록</button>
-      </form>
-    </section>
+      <!-- ---------- 표현 아카이브 ---------- -->
+      <section class="view" data-view="archive">
+        <div class="view-head">
+          <h2>표현 아카이브 <span class="zh-sub">Expression Archive</span></h2>
+          <p>요즘 중국에서 실제로 쓰는 표현을 모았어요. 분위기·문화·주의점까지 함께 살펴보세요.</p>
+        </div>
 
-    <section id="listView" class="view">
-      <div class="section-head">
-        <span class="eyebrow">Library</span>
-        <h2>사용 가능 표현 목록</h2>
-      </div>
-      <div class="list-tools card">
-        <input id="listSearch" placeholder="표현 검색" />
-        <select id="categoryFilter"><option value="all">전체 카테고리</option></select>
-      </div>
-      <div id="phraseList" class="cards-grid"></div>
-    </section>
-  </main>
+        <div class="paper-card archive-controls">
+          <input id="archiveSearch" type="text" class="text-input" placeholder="표현·뜻·병음으로 검색…" />
+          <div class="archive-tools">
+            <div id="catFilter" class="cat-filter"></div>
+            <button id="randomBtn" class="btn btn-seal">🎲 랜덤 표현 추천</button>
+          </div>
+        </div>
 
-  <div id="toast" class="toast"></div>
+        <div id="archiveGrid" class="exp-grid"></div>
+      </section>
+
+      <!-- ---------- 즐겨찾기 ---------- -->
+      <section class="view" data-view="favorite">
+        <div class="view-head">
+          <h2>즐겨찾기 표현 <span class="zh-sub">收藏</span></h2>
+          <p>인장을 찍어 둔 표현이에요. 나중에 다시 꺼내 보세요.</p>
+        </div>
+        <div id="favoriteGrid" class="exp-grid"></div>
+      </section>
+
+      <!-- ---------- 학습 통계 ---------- -->
+      <section class="view" data-view="stats">
+        <div class="view-head">
+          <h2>학습 통계 <span class="zh-sub">学习统计</span></h2>
+          <p>지금까지의 학습 흔적을 모아봤어요.</p>
+        </div>
+
+        <div class="stat-cards">
+          <div class="paper-card stat-card">
+            <div class="stat-num" id="statAnalyze">0</div>
+            <div class="stat-label">맥락 분석 횟수</div>
+          </div>
+          <div class="paper-card stat-card">
+            <div class="stat-num" id="statFav">0</div>
+            <div class="stat-label">즐겨찾기 표현</div>
+          </div>
+          <div class="paper-card stat-card">
+            <div class="stat-num" id="statRecent">0</div>
+            <div class="stat-label">최근 학습 표현</div>
+          </div>
+          <div class="paper-card stat-card">
+            <div class="stat-num" id="statArchive">0</div>
+            <div class="stat-label">아카이브 표현 수</div>
+          </div>
+        </div>
+
+        <div class="paper-card">
+          <h3 class="block-title">카테고리별 학습 분포</h3>
+          <div id="catChart" class="cat-chart"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 토스트 -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
